@@ -153,6 +153,8 @@ namespace :scrape do
                                            fuku: horse["fuku"])
           end
         end
+      rescue
+        p race.no
       end
     end
   end
@@ -185,6 +187,8 @@ namespace :scrape do
             end
           end
         end
+      rescue
+        p race.no
       end
     end
   end
@@ -213,6 +217,8 @@ namespace :scrape do
             end
           end
         end
+      rescue
+        p race.no
       end
     end
   end
@@ -245,6 +251,8 @@ namespace :scrape do
             end
           end
         end
+      rescue
+        p race.no
       end
     end
   end
