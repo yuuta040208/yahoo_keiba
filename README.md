@@ -13,7 +13,7 @@ MySQL 5.7
 ## 環境構築手順
 
 ```
-$ git clone https://github.com/evitch040208/yahoo_keiba.git
+$ git clone https://github.com/yuuta040208/yahoo_keiba.git
 $ cd yahoo_keiba
 $ docker-compose build
 $ gem install bundler
