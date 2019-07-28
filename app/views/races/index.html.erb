@@ -1,0 +1,40 @@
+<% @dates.each do |date| %>
+  <div class="date-area">
+    <%= date %>
+  </div>
+  <div class="race-area row">
+    <% today_races = @races.where(date: date) %>
+    <% today_holds = today_races.pluck(:hold).uniq %>
+    <% panel_size = 12 / today_holds.size %>
+
+    <% today_holds.each do |hold| %>
+      <div class="col-sm-<%= panel_size %>">
+        <div class="card">
+          <div class="card-header">
+            <%= hold %>
+          </div>
+          <div class="card-body">
+            <table>
+              <tr>
+                <th></th>
+                <th>レース名</th>
+                <th>種別</th>
+                <th>距離</th>
+              </tr>
+              <% hold_races = today_races.where(hold: hold) %>
+              <% hold_races.each do |hold_race| %>
+                <tr>
+                  <td><%= hold_race.no %>R</td>
+                  <td><%= link_to hold_race.name, race_path(hold_race)  %></td>
+                  <td><%= hold_race.info %></td>
+                  <td><%= hold_race.distance %></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <br>
+<% end %>
