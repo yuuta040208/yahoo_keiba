@@ -8,6 +8,7 @@ TANFUKU_URL = "https://keiba.yahoo.co.jp/odds/tfw/"
 UMAREN_URL = "https://keiba.yahoo.co.jp/odds/ur/"
 UMATAN_URL = "https://keiba.yahoo.co.jp/odds/ut/"
 WIDE_URL = "https://keiba.yahoo.co.jp/odds/wide/"
+TOP_URL = "https://keiba.yahoo.co.jp"
 
 
 namespace :scrape do
@@ -69,7 +70,6 @@ namespace :scrape do
     Race.where(year: year).each do |race|
       race_info = {}
 
-      p race
       begin
         html = open(INFO_URL + race.no + "/").read
         doc = Nokogiri::HTML.parse(html).css("p#raceTitMeta")
@@ -90,6 +90,7 @@ namespace :scrape do
                     condition: race_info["condition"],
                     distance: race_info["distance"],
                     prize: race_info["prize"])
+        p race_info
       rescue
         p race.no
       end
@@ -253,6 +254,49 @@ namespace :scrape do
         end
       rescue
         p race.no
+      end
+    end
+  end
+
+
+  desc "今週末のレース情報を取得"
+  task weekend: :environment do
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE this_week_races;")
+
+    html = open(TOP_URL).read
+    doc = Nokogiri::HTML.parse(html).css("table.topRaceInfo")
+
+    dates = []
+    doc[1].css("th").each_with_index do |th, i|
+      dates[i] = th.text
+    end
+
+    divide = doc[1].css("td.topRaceInfoDay").size / dates.size
+    doc[1].css("td.topRaceInfoDay").each_with_index do |td, count|
+      hold = td.text
+      link = td.css("a")[0][:href]
+      sub_html = open(TOP_URL + link).read
+      sub_doc = Nokogiri::HTML.parse(sub_html).css("table.scheLs")
+      sub_doc.css("tr").each_with_index do |tr, i|
+        if i.odd?
+          begin
+            no = tr.css("td")[0].text.split("R")[0].to_i
+            time = tr.css("td")[0].text.split("R")[1]
+            name = tr.css("td")[1].text.split("\n")[0]
+            info = tr.css("td")[2].text
+            distance = tr.css("td")[3].text
+
+            ThisWeekRace.create(date: dates[(count / divide).to_i],
+                                hold: hold,
+                                no: no,
+                                time: time,
+                                name: name,
+                                info: info,
+                                distance: distance)
+          rescue
+            p "error"
+          end
+        end
       end
     end
   end

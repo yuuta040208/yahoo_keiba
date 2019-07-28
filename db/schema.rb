@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_30_084303) do
+ActiveRecord::Schema.define(version: 2019_07_27_131033) do
 
   create_table "race_results", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "race_id"
@@ -43,6 +43,18 @@ ActiveRecord::Schema.define(version: 2019_06_30_084303) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["race_id"], name: "index_tanfuku_odds_on_race_id"
+  end
+
+  create_table "this_week_races", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "date"
+    t.string "hold"
+    t.integer "no"
+    t.string "time"
+    t.string "name"
+    t.string "info"
+    t.string "distance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "umaren_odds", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

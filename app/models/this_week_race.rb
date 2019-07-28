@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: umaren_odds
+# Table name: wide_odds
 #
 #  id         :bigint           not null, primary key
 #  race_id    :bigint
@@ -11,6 +11,5 @@
 #  updated_at :datetime         not null
 #
 
-class UmarenOdds < ApplicationRecord
-  belongs_to :race
+class ThisWeekRace < ApplicationRecord
 end
