@@ -51,5 +51,3 @@ test:
 production:
   <<: *default
   database: yahoo_keiba_production
-  username: yahoo_keiba
-  password: <%= ENV['YAHOO_KEIBA_DATABASE_PASSWORD'] %>
